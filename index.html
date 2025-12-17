@@ -148,7 +148,26 @@ function selectRegion(key){
   newsLink.style.display = "inline-block";
   countryImage.src = r.img;
 }
+  function selectRegion(key) {
+  currentKey = key;
+
+  document.getElementById('title').innerText = regions[key].name;
+  document.getElementById('desc').innerText = regions[key].desc;
+
+  const link = document.getElementById('newsLink');
+  link.href = regions[key].news;
+  link.style.display = "inline-block";
+
+  // 🔽 여기부터 이미지 표시 (이전엔 이게 없었음)
+  const img = document.getElementById('countryImage');
+  img.src = regions[key].img;
+  img.style.display = "block";
+
+  loadComments();
+}
+
 </script>
 
 </body>
 </html>
+
