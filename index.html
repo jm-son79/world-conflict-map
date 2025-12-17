@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>세계 분쟁 지역 지도</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+  body { margin:0; font-family: Arial; }
+  h2 { margin:10px; }
+  #map { height:50vh; }
+  #panel { padding:15px; }
+
+  #countryImage {
+    width:100%;
+    max-height:220px;
+    object-fit:contain;
+    border:1px solid #ccc;
+    margin-top:10px;
+  }
+
+  #newsLink {
+    display:inline-block;
+    margin:8px 0;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>🌍 세계 분쟁 지역 정보 지도</h2>
+
+<div id="map"></div>
+
+<div id="panel">
+  <h3 id="title">지역을 선택하세요</h3>
+  <p id="desc"></p>
+
+  <a id="newsLink" href="#" target="_blank" style="display:none;">
+    🔗 관련 기사 보기
+  </a>
+
+  <img id="countryImage" src="" alt="나라 이미지">
+</div>
+
+<script>
+/* 지도 */
+const map = L.map('map').setView([25,20],2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+/* 🔴 11개 지역 + 이미지 */
+const regions = {
+  ukraine:{
+    name:"우크라이나 전쟁",
+    desc:"러시아의 군사 개입과 국제 질서에 미치는 영향",
+    lat:48.5,lng:31,
+    news:"https://www.voakorea.com/a/7975108.html",
+    img:"images/ukraine.jpg"
+  },
+  korea:{
+    name:"한반도 핵 문제",
+    desc:"북한의 핵 개발과 동북아 안보 환경",
+    lat:38,lng:127,
+    news:"https://www.joongang.co.kr/article/25389823",
+    img:"images/korea.jpg"
+  },
+  israel:{
+    name:"이스라엘-팔레스타인 분쟁",
+    desc:"영토와 민족 자결권을 둘러싼 장기적 갈등",
+    lat:31.5,lng:35,
+    news:"http://newstapa.org/article/Kbd1Z",
+    img:"images/israel.jpg"
+  },
+  taiwan:{
+    name:"대만 해협 긴장",
+    desc:"하나의 중국 원칙과 대만의 정치적 지위 문제",
+    lat:23.7,lng:121,
+    news:"https://www.hani.co.kr/arti/politics/defense/1060607.html",
+    img:"images/taiwan.jpg"
+  },
+  nepal:{
+    name:"네팔 반정부 시위",
+    desc:"정치적 불안과 사회적 긴장",
+    lat:28.2,lng:84.5,
+    news:"https://www.joongang.co.kr/article/25365692",
+    img:"images/nepal.jpg"
+  },
+  turkey_syria:{
+    name:"튀르키예-시리아 분쟁",
+    desc:"쿠르드 문제와 국경 안보 충돌",
+    lat:37,lng:38,
+    news:"https://www.voakorea.com/a/7686742.html",
+    img:"images/turkey_syria.jpg"
+  },
+  yemen:{
+    name:"예멘 내전",
+    desc:"후티 반군과 정부군 간의 장기적 갈등",
+    lat:15.3,lng:44,
+    news:"https://www.voakorea.com/a/4670960.html",
+    img:"images/yemen.jpg"
+  },
+  myanmar:{
+    name:"미얀마 쿠데타",
+    desc:"군부의 권력 장악과 민주화 운동 탄압",
+    lat:21.9,lng:95.9,
+    news:"https://www.voakorea.com/a/6946829.html",
+    img:"images/myanmar.jpg"
+  },
+  beirut:{
+    name:"베이루트 종교분쟁",
+    desc:"종파 간 긴장과 폭력 사건",
+    lat:33.9,lng:35.5,
+    news:"https://www.hankookilbo.com/News/Read/A2020100723390003596",
+    img:"images/beirut.jpg"
+  },
+  congo:{
+    name:"콩고 국제분쟁",
+    desc:"자원과 민족 갈등으로 인한 내전",
+    lat:-0.5,lng:15,
+    news:"https://v.daum.net/v/20251215173115644",
+    img:"images/congo.jpg"
+  },
+  us_mexico:{
+    name:"미국-멕시코 국경 갈등",
+    desc:"불법 이민과 마약 문제로 인한 긴장",
+    lat:31.5,lng:-106,
+    news:"https://www.hani.co.kr/arti/international/america/1147306.html",
+    img:"images/us_mexico.jpg"
+  }
+};
+
+/* 마커 */
+Object.keys(regions).forEach(key=>{
+  const r = regions[key];
+  L.marker([r.lat,r.lng])
+    .addTo(map)
+    .bindPopup(r.name)
+    .on("click",()=>selectRegion(key));
+});
+
+function selectRegion(key){
+  const r = regions[key];
+  title.innerText = r.name;
+  desc.innerText = r.desc;
+  newsLink.href = r.news;
+  newsLink.style.display = "inline-block";
+  countryImage.src = r.img;
+}
+</script>
+
+</body>
+</html>
